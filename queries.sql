@@ -22,7 +22,8 @@ VALUES ('The Shire', 'Bilbo Baggins', '1 Hobbit-Hole', 'Bag End', '111', 'Middle
 UPDATE Customer SET PostalCode = 11122 WHERE ContactName = 'Bilbo Baggins'; 
 
 -- (Stretch) Find a query to discover how many different cities are stored in the Customers table. Repeats should not be double counted
-SELECT DISTINCT City FROM Customer;
+-- SELECT DISTINCT City FROM Customer;
+SELECT COUNT (DISTINCT City)  FROM Customer;
 -- OR SELECT DISTINCT City FROM Customer ORDER BY City ASC;
 -- (Stretch) Find all suppliers who have names longer than 20 characters. You can use `length(SupplierName)` to get the length of the name
 SELECT ContactName FROM Supplier WHERE length(ContactName) > 20 ;
