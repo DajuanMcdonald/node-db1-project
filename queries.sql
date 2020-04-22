@@ -8,7 +8,7 @@ SELECT Phone FROM Supplier WHERE id = '11';
 
 -- List first 10 orders placed, sorted descending by the order date
 SELECT * from 'Order' ORDER BY OrderDate DESC, OrderDate LIMIT 10; 
-SELECT * FROM 'Order' ORDER BY OrderDate DESC, OrderDate LIMIT 10;
+SELECT * FROM 'Order' ORDER BY OrderDate DESC LIMIT 10;
 
 -- Find all customers that live in London, Madrid, or Brazil
 SELECT ShipName FROM 'Order' WHERE ShipCity ='London' OR ShipCity = 'Madrid' OR ShipCity = 'Brazil' ;
