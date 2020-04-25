@@ -15,7 +15,7 @@ router.post('/', (req, res) => {
 
         db('accounts').insert(req.body, 'id')
         .then( ids => {
-        res.status(201).jsonp({account: ids})
+        res.status(201).json({account: ids})
         }).catch(err => {
             res.status(500).json({message: "Server error"})
         })
@@ -23,13 +23,15 @@ router.post('/', (req, res) => {
 })
 
 //find all accounts in db READ
-router.get('/', (req, res) => {
-    db.select('*').from('accounts')
-    .then( acc => {
-        res.status(200).jsonp({account: acc})
-    }).catch(err => {
-        res.status(500).json({message: "Server Error"})
-    })
+router.get('/', async (req, res) => {
+    const accounts = await db('accounts')
+    res.status(200).json(accounts)
+    // db.select('*').from('accounts')
+    // .then( acc => {
+    //     res.status(200).json(acc)
+    // }).catch(err => {
+    //     res.status(500).json({message: "Server Error"})
+    // })
 
 })
 
@@ -53,14 +55,17 @@ router.get('/:id', (req, res) => {
 //update an account in db : UPDATE
 router.put('/:id', (req, res) => {
 const changes = req.body
+if(!changes.name || !changes.budget) {
+    res.status(404).json({message: "Please provide contents to update"})
+} 
 db('accounts').where({id: req.params.id}).update(changes)
 .then( acc => {
-    if(!changes.name || !changes.budget) {
-        res.status(404).json({message: "Please provide contents to update"})
-    } else {
-        res.status(200).jsonp({account: `Account updated successfully`, acc})
-    }
     
+    if(acc) {
+        db('accounts').where('id', '=', req.params.id).first()
+        .then( account =>  res.status(200).json(account))
+        .catch(err => res.json({message: 'error on hold'}))
+    }
 })
 .catch(err => {
     res.status(500).json({message: "Server error."})
